@@ -37,7 +37,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
     public void customIndexedColor_compareForegroundColor_consistentColors() throws IOException {
         XSSFCell cell = workbook.getSheetAt(1).getRow(0).getCell(0);
         XSSFColor color = cell.getCellStyle().getFillForegroundColorColor();
-        String indexedARGB = ColorConverterUtil.getIndexedARGB(workbook,color);
+        String indexedARGB = ColorConverterUtil.getCssRGBA(workbook,color);
 
         assertNotNull(indexedARGB);
 
@@ -58,7 +58,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
         XSSFCell cell = workbook.getSheetAt(1).getRow(2).getCell(1);
         XSSFColor color = cell.getCellStyle().getBorderColor(
             XSSFCellBorder.BorderSide.RIGHT);
-        String indexedARGB = ColorConverterUtil.getIndexedARGB(workbook,color);
+        String indexedARGB = ColorConverterUtil.getCssRGBA(workbook,color);
 
         assertNotNull(indexedARGB);
 

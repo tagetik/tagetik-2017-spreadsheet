@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
-import org.w3c.dom.DOMException;
 
 public class ColorConverterUtil implements Serializable {
 
@@ -25,8 +24,15 @@ public class ColorConverterUtil implements Serializable {
         return buildRgba(rgba, x);
     }
 
-    public static String getIndexedARGB(XSSFWorkbook workbook,
+    /**
+     * 
+     * @param workbook
+     * @param color Indexed Color or RGB color
+     * @return Css value of the color
+     */
+    public static String getCssRGBA(XSSFWorkbook workbook,
         XSSFColor color) {
+        String argbHex = color.getARGBHex();
         if (color.isIndexed() && hasCustomIndexedColors(workbook)) {
             try {
                 StylesTable styleSource = workbook.getStylesSource();
@@ -38,11 +44,11 @@ public class ColorConverterUtil implements Serializable {
                     .getNamedItem("rgb").getNodeValue();
                 return toRGBA(rgb);
             } catch (IndexOutOfBoundsException e) {
-                return color.getARGBHex();
+                return (argbHex != null) ? toRGBA(argbHex) : null;
             }
         }
 
-        return color.getARGBHex();
+        return (argbHex != null) ? toRGBA(argbHex) : null;
 
     }
 
