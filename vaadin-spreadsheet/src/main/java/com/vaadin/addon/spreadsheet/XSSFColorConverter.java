@@ -321,14 +321,14 @@ public class XSSFColorConverter implements ColorConverter {
         CTColor bgColor = dxf.getFill().getPatternFill().getBgColor();
 
         if (bgColor.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) bgColor.getTheme());
+            XSSFColor themeColor = workbook.getTheme()
+                .getThemeColor((int) bgColor.getTheme());
 
             // CF rules have tint in bgColor but not the XSSFColor.
             return styleColor(themeColor, bgColor.getTint());
         } else {
-            byte[] rgb = bgColor.getRgb();
-            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
+            return ColorConverterUtil
+                .getCssRGBA(workbook, new XSSFColor(bgColor));
         }
 
     }
@@ -354,8 +354,8 @@ public class XSSFColorConverter implements ColorConverter {
 
             return styleColor(themeColor, ctColor.getTint());
         } else {
-            byte[] rgb = ctColor.getRgb();
-            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
+            return ColorConverterUtil
+                .getCssRGBA(workbook, new XSSFColor(ctColor));
         }
 
     }
