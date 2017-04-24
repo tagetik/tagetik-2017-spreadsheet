@@ -124,7 +124,7 @@ public class XSSFColorConverter implements ColorConverter {
         sb.append(":");
         if (color.isIndexed() && ColorConverterUtil
             .hasCustomIndexedColors(workbook)) {
-            sb.append(ColorConverterUtil.getIndexedARGB(workbook,color));
+            sb.append(ColorConverterUtil.getCssRGBA(workbook,color));
             return sb.toString();
         }
         if (color == null || color.isAuto()) {
@@ -400,7 +400,7 @@ public class XSSFColorConverter implements ColorConverter {
         // to be removed when bug # 60898 is resolved (https://bz.apache.org/bugzilla/show_bug.cgi?id=60898)
         if (color.isIndexed() && ColorConverterUtil
             .hasCustomIndexedColors(workbook)) {
-            return ColorConverterUtil.getIndexedARGB(workbook, color);
+            return ColorConverterUtil.getCssRGBA(workbook, color);
         }
 
         byte[] argb = color.getARGB();
