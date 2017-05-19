@@ -28,7 +28,8 @@ public class ColorConverterUtil implements Serializable {
      * 
      * @param workbook
      * @param color Indexed Color or RGB color
-     * @return Css value of the color
+     * @return Css value of the color 
+     *         or <code>null</code> if the color is not indexed 
      */
     public static String getCssRGBA(XSSFWorkbook workbook,
         XSSFColor color) {

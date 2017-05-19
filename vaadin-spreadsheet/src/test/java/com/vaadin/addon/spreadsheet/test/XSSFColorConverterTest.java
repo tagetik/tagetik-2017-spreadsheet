@@ -58,9 +58,9 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
         XSSFCell cell = workbook.getSheetAt(1).getRow(2).getCell(1);
         XSSFColor color = cell.getCellStyle().getBorderColor(
             XSSFCellBorder.BorderSide.RIGHT);
-        String indexedARGB = ColorConverterUtil.getCssRGBA(workbook,color);
+        String cssRGBA = ColorConverterUtil.getCssRGBA(workbook,color);
 
-        assertNotNull(indexedARGB);
+        assertNotNull(cssRGBA);
 
         String cssValue = spreadsheetPage.getCellAt(2, 3)
             .getCssValue(BORDER_RIGHT_COLOR);
@@ -69,7 +69,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
 
         // ignore some parts of the css to avoid failures such as
         // "Expected :rgba(232, 232, 232, 1.0);  Actual   :rgba(232, 232, 232, 1)"
-        assertEquals(indexedARGB.substring(0,21), cssValue.substring(0,21));
+        assertEquals(cssRGBA.substring(0,21), cssValue.substring(0,21));
     }
 
 

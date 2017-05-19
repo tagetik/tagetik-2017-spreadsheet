@@ -124,7 +124,11 @@ public class XSSFColorConverter implements ColorConverter {
         sb.append(":");
         if (color.isIndexed() && ColorConverterUtil
             .hasCustomIndexedColors(workbook)) {
-            sb.append(ColorConverterUtil.getCssRGBA(workbook,color));
+            String cssRGBA = ColorConverterUtil.getCssRGBA(workbook, color);
+            if (cssRGBA == null) {
+                cssRGBA = "#000;";
+            }
+            sb.append(cssRGBA);
             return sb.toString();
         }
         if (color == null || color.isAuto()) {
