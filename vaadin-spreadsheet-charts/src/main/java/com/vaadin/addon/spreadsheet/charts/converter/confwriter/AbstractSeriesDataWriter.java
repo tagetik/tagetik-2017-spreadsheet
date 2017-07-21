@@ -112,6 +112,15 @@ public abstract class AbstractSeriesDataWriter {
                 dataSeries.update(item);
             }
 
+            @Override
+            public void seriesNameModified(String cellValue) {
+                dataSeries.setName(cellValue);
+                // this call doesn't update the rendered chart data, 
+                // so currently it has no visual effect.
+                // to make this work a patch to the charts is needed.
+                // talk to the PRO team to make this happen
+            }
+
         };
 
         return dataSeries;

@@ -48,7 +48,7 @@ public class ScatterSeriesReader extends
     @Override
     protected void fillSeriesData(ScatterSeriesData seriesData,
             CTScatterSer serie) {
-        seriesData.name = tryGetSeriesName(serie.getTx());
+        seriesData.name = tryGetSeriesName(serie.getTx(), seriesData);
 
         if (serie.getXVal() == null) {
             createSeriesDataPoints(serie.getYVal(), seriesData);

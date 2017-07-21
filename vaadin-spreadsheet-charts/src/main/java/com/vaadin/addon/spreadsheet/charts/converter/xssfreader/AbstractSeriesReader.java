@@ -50,7 +50,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
     protected final boolean showDataInHiddenCells;
 
     public enum ValueUpdateMode {
-        Y_VALUES, X_VALUES, Z_VALUES, CATEGORIES
+        Y_VALUES, X_VALUES, Z_VALUES, CATEGORIES, SERIES_NAME
     };
 
     public AbstractSeriesReader(XmlObject ctChart, Spreadsheet spreadsheet,
@@ -97,7 +97,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
     protected void fillSeriesData(SERIES_DATA_TYPE seriesData, CT_SER_TYPE serie) {
         CTSerAdapter ctSerAdapter = new CTSerAdapter(serie);
 
-        seriesData.name = tryGetSeriesName(ctSerAdapter.getTx());
+        seriesData.name = tryGetSeriesName(ctSerAdapter.getTx(), seriesData);
         createCategories(ctSerAdapter.getCat(), seriesData);
         createSeriesDataPoints(ctSerAdapter.getVal(), seriesData);
         seriesData.is3d = this.is3d;
@@ -342,6 +342,15 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
 
         final int index = referencedCells.indexOf(absoluteChangedCell);
 
+        if (updateMode == ValueUpdateMode.SERIES_NAME) {
+            final String cellValue = Utils.getStringValue(absoluteChangedCell,
+                spreadsheet);
+            
+            seriesData.dataUpdateListener.seriesNameModified(cellValue);
+        
+            return;
+        }
+        
         if (updateMode != ValueUpdateMode.CATEGORIES) {
             final SeriesPoint item = seriesData.seriesData.get(index);
             final Double cellValue = Utils.getNumericValue(absoluteChangedCell,
@@ -366,7 +375,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         }
     }
 
-    protected String tryGetSeriesName(CTSerTx tx) {
+    protected String tryGetSeriesName(CTSerTx tx, SERIES_DATA_TYPE seriesData) {
         try {
             if (tx.isSetV()) {
                 return tx.getV();
@@ -374,6 +383,10 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
 
             if (tx.isSetStrRef()) {
                 String formula = tx.getStrRef().getF();
+
+                handleReferencedValueUpdates(
+                    Utils.getAllReferencedCells(formula), seriesData,
+                    ValueUpdateMode.SERIES_NAME);
 
                 return Utils.getStringValueFromFormula(formula, spreadsheet);
             }

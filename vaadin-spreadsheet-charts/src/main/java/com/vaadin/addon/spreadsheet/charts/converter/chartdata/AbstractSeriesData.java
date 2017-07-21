@@ -57,6 +57,8 @@ public abstract class AbstractSeriesData {
         void zDataModified(int i, Double cellValue);
 
         void categoryModified(int i, String cellValue);
+        
+        void seriesNameModified(String cellValue);
     }
 
     public DataUpdateListener dataUpdateListener;
